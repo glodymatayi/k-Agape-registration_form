@@ -1,0 +1,481 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>K-Agape – Registration</title>
+  <style>
+    :root{
+      --brand:#5638ff; --brand2:#7e67ff; --bg:#0e0f13; --card:#151823; --muted:#9aa3b2; --fg:#e9ecf1; --bd:#283044;
+      --ok:#3ddc97; --err:#ff5277;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
+    .wrap{max-width:860px;margin:28px auto;padding:0 16px}
+    header{margin:8px 0 18px}
+    h1{font-size:22px;margin:0}
+    .sub{color:var(--muted);margin-top:8px}
+    .step{display:none;background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:18px}
+    .step.active{display:block}
+    .row{display:grid;gap:12px}
+    @media(min-width:720px){.row2{grid-template-columns:1fr 1fr}}
+    label{font-weight:600;margin:10px 0 6px;display:block}
+    input,select,textarea,button{
+      width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--bd);background:#0d1019;color:var(--fg)
+    }
+    textarea{min-height:92px;resize:vertical}
+    .chips{display:flex;flex-wrap:wrap;gap:8px}
+    .chip{
+      background:#0d1019;border:1px solid var(--bd);color:var(--fg);padding:8px 12px;border-radius:20px;cursor:pointer;user-select:none
+    }
+    .chip.on{background:var(--brand);border-color:var(--brand)}
+    .muted{color:var(--muted)}
+    .actions{display:flex;gap:10px;justify-content:flex-end;margin-top:16px}
+    .btn{background:var(--brand);border:0;color:#fff;font-weight:700;cursor:pointer}
+    .btn.secondary{background:#1b2030}
+    .msg{margin-top:10px;font-weight:600}
+    .ok{color:var(--ok)} .err{color:var(--err)}
+    .inline{display:flex;align-items:center;gap:10px}
+    .thumb{display:block;margin-top:8px;max-width:180px;border-radius:10px;border:1px solid var(--bd)}
+    .divider{height:1px;background:var(--bd);margin:16px 0}
+    small.code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--muted)}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>K-Agape Registration</h1>
+      <p class="sub">Korea’s 1st multicultural Christian dating app. Please complete the form below—review typically takes 1–2 days.</p>
+    </header>
+
+    <!-- STEP 1: BASIC INFO -->
+    <section id="step1" class="step active">
+      <h3>1) Basic Info</h3>
+      <div class="row row2">
+        <div>
+          <label>Full name</label>
+          <input id="full_name" required>
+        </div>
+        <div>
+          <label>Display name</label>
+          <input id="display_name" placeholder="How others see your name">
+        </div>
+      </div>
+
+      <div class="row row2">
+        <div>
+          <label>Email</label>
+          <input id="email" type="email" required>
+        </div>
+        <div>
+          <label>Age</label>
+          <input id="age" type="number" min="18" max="99" placeholder="18+">
+        </div>
+      </div>
+
+      <div class="row row2">
+        <div>
+          <label>Location</label>
+          <input id="location" placeholder="City, Country">
+        </div>
+        <div>
+          <label>Occupation</label>
+          <input id="occupation">
+        </div>
+      </div>
+
+      <div class="row row2">
+        <div>
+          <label>Education</label>
+          <select id="education">
+            <option value="">Select…</option>
+            <option>High School</option><option>Bachelor</option><option>Master</option><option>Doctorate</option><option>Other</option>
+          </select>
+        </div>
+        <div>
+          <label>Relationship Goal</label>
+          <select id="relationship_goal">
+            <option>Friendship</option><option>Dating</option><option>Marriage</option>
+          </select>
+        </div>
+      </div>
+
+      <label>About Me</label>
+      <textarea id="about_me" placeholder="Tell others a little about you…"></textarea>
+
+      <div class="divider"></div>
+
+      <label>Interests (pick up to 5)</label>
+      <div id="interests" class="chips"></div>
+
+      <label style="margin-top:12px">Values (pick up to 5)</label>
+      <div id="values" class="chips"></div>
+
+      <div class="actions">
+        <button class="btn" id="next1">Continue</button>
+      </div>
+      <p id="m1" class="msg"></p>
+    </section>
+
+    <!-- STEP 2: BASIC FAITH INFO -->
+    <section id="step2" class="step">
+      <h3>2) Basic Faith Info</h3>
+
+      <label>Church Name</label>
+      <input id="church_name" placeholder="Your current church name">
+
+      <div class="row row2">
+        <div>
+          <label>Church Denomination</label>
+          <select id="denomination">
+            <option>Protestant</option><option>Catholic</option><option>Orthodox</option><option>Other</option>
+          </select>
+        </div>
+        <div>
+          <label>Attendance Frequency</label>
+          <select id="attendance">
+            <option>Weekly or more</option><option>2–3 times a month</option><option>Monthly or for major events</option>
+            <option>Rarely</option><option>Not currently attending</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row row2">
+        <div>
+          <label>Years at Current Church</label>
+          <select id="years_at_church">
+            <option>Less than 1 year</option><option>1–3 years</option><option>3–5 years</option><option>More than 5 years</option>
+          </select>
+        </div>
+        <div>
+          <label>Ministry Involvement</label>
+          <select id="ministry">
+            <option>No</option><option>Yes</option>
+          </select>
+        </div>
+      </div>
+
+      <label>If serving, please explain</label>
+      <textarea id="ministry_note" placeholder="Role, frequency, etc. (optional)"></textarea>
+
+      <div class="actions">
+        <button class="btn secondary" id="back2">Back</button>
+        <button class="btn" id="next2">Continue</button>
+      </div>
+      <p id="m2" class="msg"></p>
+    </section>
+
+    <!-- STEP 3: FAITH BACKGROUND + VERIFICATION -->
+    <section id="step3" class="step">
+      <h3>3) Faith Background & Verification</h3>
+
+      <label>Foundational Beliefs (select all that apply)</label>
+      <div id="beliefs" class="chips"></div>
+
+      <div class="row row2" style="margin-top:8px">
+        <div>
+          <label>Jesus is the only way to salvation (John 14:6)?</label>
+          <select id="jesus_only"><option>Yes</option><option>No</option><option>Unsure</option></select>
+        </div>
+        <div>
+          <label>Bible authority</label>
+          <select id="bible"><option>Bible alone</option><option>Bible plus additional writings</option><option>Not sure</option></select>
+        </div>
+      </div>
+
+      <label>Have you been affiliated with movements outside orthodox Christianity?</label>
+      <select id="outside"><option>No</option><option>Yes — please explain</option></select>
+      <textarea id="outside_note" placeholder="Explain if you answered yes…" ></textarea>
+
+      <label>What are your views on sexual purity before marriage, cohabitation, and use of pornography?</label>
+      <textarea id="purity"></textarea>
+
+      <label>What role does faith play in your understanding of Christian dating and marriage?</label>
+      <textarea id="faith_role"></textarea>
+
+      <label>Spiritual or theological non-negotiables when considering a future spouse</label>
+      <textarea id="non_negotiables"></textarea>
+
+      <div class="divider"></div>
+
+      <label>Profile Photo for display</label>
+      <input id="photo" type="file" accept="image/*"/>
+      <img id="photo_prev" class="thumb" style="display:none"/>
+      <p class="muted">You can update or delete this later from your account settings after logging in.</p>
+
+      <div class="divider"></div>
+
+      <h4>Phone verification</h4>
+      <p class="muted">We use phone verification to keep accounts real and reduce spam. Standard SMS rates may apply.</p>
+      <div class="row row2">
+        <div>
+          <label>Phone (with country code, e.g. +82…)</label>
+          <input id="phone" placeholder="+82…"/>
+        </div>
+        <div class="row">
+          <div>
+            <label>&nbsp;</label>
+            <button class="btn" id="sendCode">Send code</button>
+          </div>
+        </div>
+      </div>
+      <div id="otpArea" style="display:none" class="row row2">
+        <div>
+          <label>Enter code</label>
+          <input id="otp"/>
+        </div>
+        <div class="row">
+          <div>
+            <label>&nbsp;</label>
+            <button class="btn" id="verifyCode">Verify</button>
+          </div>
+        </div>
+      </div>
+      <div id="recaptcha-container"></div>
+      <p id="phoneMsg" class="msg"></p>
+
+      <div class="divider"></div>
+
+      <h4>Selfie (optional)</h4>
+      <p class="muted">A quick selfie helps us review faster and reduce impersonation. You can skip this if you prefer.</p>
+      <div class="row row2">
+        <div>
+          <video id="cam" autoplay playsinline style="width:100%;max-width:240px;border-radius:10px;border:1px solid var(--bd)"></video>
+          <canvas id="canvas" style="display:none"></canvas>
+        </div>
+        <div class="row">
+          <div>
+            <label>&nbsp;</label>
+            <button class="btn" id="shotBtn">Take selfie</button>
+            <img id="selfie_prev" class="thumb" style="display:none"/>
+          </div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <label class="inline" style="gap:10px;margin-top:6px">
+        <input id="consent" type="checkbox" style="width:auto"/>
+        <span class="muted">I agree to the
+          <a href="https://glodymatayi.github.io/k-Agape-legal/terms.html" target="_blank">Terms</a> and
+          <a href="https://glodymatayi.github.io/k-Agape-legal/privacy.html" target="_blank">Privacy Policy</a>.
+        </span>
+      </label>
+
+      <div class="actions">
+        <button class="btn secondary" id="back3">Back</button>
+        <button class="btn" id="submitBtn">Submit</button>
+      </div>
+      <p id="m3" class="msg"></p>
+    </section>
+
+    <!-- SUCCESS -->
+    <section id="done" class="step">
+      <h3>Profile submitted 🎉</h3>
+      <p>Your profile creation has been successfully submitted. After review, a <b>password link</b> will be sent to your email so you can sign in to the app.</p>
+      <p class="muted">Thank you for joining K-Agape!</p>
+    </section>
+  </div>
+
+  <!-- Firebase v10 (modules) -->
+  <script type="module">
+    // ====== Config ======
+    const SELFIE_REQUIRED = false; // set to true if you want to require a selfie
+
+    // Firebase SDKs
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
+    import { initializeAppCheck, ReCaptchaV3Provider } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app-check.js";
+    import { getFirestore, addDoc, collection, serverTimestamp, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
+    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-storage.js";
+    import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-auth.js";
+
+    // ---- Your Firebase config ----
+    const firebaseConfig = {
+      apiKey: "AIzaSyDozLO7ktrWwk7il59dJZB8jcTYVK11qOE",
+      authDomain: "k-agape-app.firebaseapp.com",
+      projectId: "k-agape-app",
+      storageBucket: "k-agape-app.firebasestorage.app",
+      messagingSenderId: "279368410175",
+      appId: "1:279368410175:web:6916f105a33549dd9ac48a"
+    };
+    const app = initializeApp(firebaseConfig);
+
+    // App Check (reCAPTCHA v3)
+    initializeAppCheck(app, {
+      provider: new ReCaptchaV3Provider("6LdDAtArAAAAADX7Q8hlxjdsOeLXkv6wcC6c4R9R"),
+      isTokenAutoRefreshEnabled: true,
+    });
+
+    const db = getFirestore(app);
+    const storage = getStorage(app);
+    const auth = getAuth(app);
+
+    // ====== UI helpers ======
+    const $ = (id)=>document.getElementById(id);
+    const show = (id)=>{ for(const s of document.querySelectorAll('.step')) s.classList.remove('active'); $(id).classList.add('active'); };
+
+    // Interests & Values chips
+    const interestOptions = ["Travel","Music","Movies","Fitness","Cooking","Reading","Photography","Art","Dancing","Hiking","Gaming","Sports","Fashion","Food","Coffee","Wine","Yoga","Beach","Dogs","Cats"];
+    const valueOptions = ["Family","Honesty","Discipline","Patience","Integrity","Reading","Gratitude","Responsibility","Courage","Empathy","Self-discipline","Wisdom","Relaxation","Dreams chasing","Free mind","Life balance"];
+    function renderChips(containerId, options, max=5){
+      const el=$(containerId); el.dataset.max=max; el.dataset.sel="[]";
+      options.forEach(txt=>{
+        const c=document.createElement('div'); c.className='chip'; c.textContent=txt;
+        c.addEventListener('click',()=>{
+          const sel=JSON.parse(el.dataset.sel);
+          const idx=sel.indexOf(txt);
+          if(idx>=0){ sel.splice(idx,1); c.classList.remove('on'); }
+          else{
+            if(sel.length>=max){ flash(`${containerId} can have up to ${max}`, 'm1'); return; }
+            sel.push(txt); c.classList.add('on');
+          }
+          el.dataset.sel=JSON.stringify(sel);
+        });
+        el.appendChild(c);
+      });
+    }
+    function getChips(containerId){ return JSON.parse($(containerId).dataset.sel||"[]"); }
+    function flash(msg, where='m3', ok=false){ const el=$(where); el.textContent=msg; el.className='msg '+(ok?'ok':'err'); setTimeout(()=>{el.textContent='';}, 4000); }
+
+    renderChips('interests', interestOptions, 5);
+    renderChips('values', valueOptions, 5);
+
+    // Beliefs chips
+    const beliefOptions = [
+      "Trinity","Deity of Christ","Resurrection of Jesus","Authority of Scripture",
+      "Salvation by grace through faith","Indwelling of the Holy Spirit",
+      "Visible return of Christ","Reality of heaven and earth","The Church as the Body of Christ"
+    ];
+    renderChips('beliefs', beliefOptions, 20);
+
+    // Step nav
+    $('next1').onclick=()=>{
+      if(!$('full_name').value.trim() || !$('email').value.trim()){
+        flash('Please provide at least your full name and email.', 'm1'); return;
+      }
+      show('step2');
+    };
+    $('back2').onclick=()=>show('step1');
+    $('next2').onclick=()=>show('step3');
+    $('back3').onclick=()=>show('step2');
+
+    // Photo preview
+    $('photo').addEventListener('change', e=>{
+      const f=e.target.files[0]; if(!f){$('photo_prev').style.display='none';return;}
+      const url=URL.createObjectURL(f);
+      $('photo_prev').src=url; $('photo_prev').style.display='block';
+    });
+
+    // Camera for selfie
+    let selfieBlob=null;
+    try{
+      const stream=await navigator.mediaDevices.getUserMedia({video:true});
+      $('cam').srcObject=stream;
+    }catch(e){ /* ignore if camera not allowed */ }
+    $('shotBtn').onclick=()=>{
+      const v=$('cam'); if(!v.videoWidth){flash('Camera not available (you can skip selfie).'); return;}
+      const c=$('canvas'); c.width=v.videoWidth; c.height=v.videoHeight;
+      const ctx=c.getContext('2d'); ctx.drawImage(v,0,0);
+      c.toBlob(b=>{
+        if(b){ selfieBlob=b; const url=URL.createObjectURL(b); $('selfie_prev').src=url; $('selfie_prev').style.display='block'; flash('Selfie captured.', 'm3', true); }
+      }, 'image/jpeg', 0.9);
+    };
+
+    // Phone verification
+    let appVerifier=null, confirmationResult=null, phoneVerified=false;
+    function initRecaptcha(){
+      if(appVerifier) return;
+      appVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', { size:'invisible' });
+    }
+    $('sendCode').onclick=async()=>{
+      try{
+        initRecaptcha();
+        const phone=$('phone').value.trim();
+        if(!phone.startsWith('+')){ flash('Include country code, e.g. +82...', 'phoneMsg'); return; }
+        confirmationResult = await signInWithPhoneNumber(auth, phone, appVerifier);
+        $('otpArea').style.display='grid';
+        flash('Code sent. Please check your SMS.', 'phoneMsg', true);
+      }catch(err){ flash(err.message||'Failed to send code.', 'phoneMsg'); }
+    };
+    $('verifyCode').onclick=async()=>{
+      try{
+        const code=$('otp').value.trim();
+        await confirmationResult.confirm(code);
+        phoneVerified=true;
+        flash('Phone verified ✔', 'phoneMsg', true);
+      }catch(err){ flash('Invalid code. Try again.', 'phoneMsg'); }
+    };
+
+    // Submit
+    $('submitBtn').onclick=async()=>{
+      try{
+        // minimal checks
+        if(!$('consent').checked){ flash('Please accept Terms and Privacy.', 'm3'); return; }
+        if(!phoneVerified){ flash('Please verify your phone first.', 'm3'); return; }
+        if(SELFIE_REQUIRED && !selfieBlob){ flash('Selfie is required to submit.', 'm3'); return; }
+
+        // Collect data
+        const data={
+          created_time: serverTimestamp(),
+          status: "pending_review",
+          // step1
+          full_name: $('full_name').value.trim(),
+          display_name: $('display_name').value.trim(),
+          email: $('email').value.trim().toLowerCase(),
+          age: $('age').value ? Number($('age').value) : null,
+          location: $('location').value.trim(),
+          occupation: $('occupation').value.trim(),
+          education: $('education').value,
+          relationship_goal: $('relationship_goal').value,
+          about_me: $('about_me').value.trim(),
+          interests: getChips('interests'),
+          values: getChips('values'),
+          // step2
+          church_name: $('church_name').value.trim(),
+          denomination: $('denomination').value,
+          attendance: $('attendance').value,
+          years_at_church: $('years_at_church').value,
+          ministry: $('ministry').value,
+          ministry_note: $('ministry_note').value.trim(),
+          // step3
+          beliefs: getChips('beliefs'),
+          jesus_only: $('jesus_only').value,
+          bible: $('bible').value,
+          outside: $('outside').value,
+          outside_note: $('outside_note').value.trim(),
+          purity: $('purity').value.trim(),
+          faith_role: $('faith_role').value.trim(),
+          non_negotiables: $('non_negotiables').value.trim(),
+          consent: true,
+          phone_verified: true
+        };
+
+        // Create doc first
+        const ref = await addDoc(collection(db, "interested_users"), data);
+
+        // Upload files if any
+        const updates={};
+        const photoFile=$('photo').files[0];
+        if(photoFile){
+          const pRef = refFrom(`interested_users/${ref.id}/display_photo.jpg`);
+          await uploadBytes(pRef, photoFile);
+          updates.photo_url = await getDownloadURL(pRef);
+        }
+        if(selfieBlob){
+          const sRef = refFrom(`interested_users/${ref.id}/selfie.jpg`);
+          await uploadBytes(sRef, selfieBlob);
+          updates.selfie_url = await getDownloadURL(sRef);
+        }
+        if(Object.keys(updates).length) await updateDoc(doc(db,'interested_users',ref.id), updates);
+
+        show('done');
+      }catch(err){
+        console.error(err); flash(err.message||'Submission failed. Please try again.', 'm3');
+      }
+    };
+
+    // small helper
+    const refFrom = (path)=> ref(storage, path);
+  </script>
+</body>
+</html>

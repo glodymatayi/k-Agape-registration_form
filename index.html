@@ -1,481 +1,556 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>K-Agape – Registration</title>
-  <style>
-    :root{
-      --brand:#5638ff; --brand2:#7e67ff; --bg:#0e0f13; --card:#151823; --muted:#9aa3b2; --fg:#e9ecf1; --bd:#283044;
-      --ok:#3ddc97; --err:#ff5277;
-    }
-    *{box-sizing:border-box}
-    body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
-    .wrap{max-width:860px;margin:28px auto;padding:0 16px}
-    header{margin:8px 0 18px}
-    h1{font-size:22px;margin:0}
-    .sub{color:var(--muted);margin-top:8px}
-    .step{display:none;background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:18px}
-    .step.active{display:block}
-    .row{display:grid;gap:12px}
-    @media(min-width:720px){.row2{grid-template-columns:1fr 1fr}}
-    label{font-weight:600;margin:10px 0 6px;display:block}
-    input,select,textarea,button{
-      width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--bd);background:#0d1019;color:var(--fg)
-    }
-    textarea{min-height:92px;resize:vertical}
-    .chips{display:flex;flex-wrap:wrap;gap:8px}
-    .chip{
-      background:#0d1019;border:1px solid var(--bd);color:var(--fg);padding:8px 12px;border-radius:20px;cursor:pointer;user-select:none
-    }
-    .chip.on{background:var(--brand);border-color:var(--brand)}
-    .muted{color:var(--muted)}
-    .actions{display:flex;gap:10px;justify-content:flex-end;margin-top:16px}
-    .btn{background:var(--brand);border:0;color:#fff;font-weight:700;cursor:pointer}
-    .btn.secondary{background:#1b2030}
-    .msg{margin-top:10px;font-weight:600}
-    .ok{color:var(--ok)} .err{color:var(--err)}
-    .inline{display:flex;align-items:center;gap:10px}
-    .thumb{display:block;margin-top:8px;max-width:180px;border-radius:10px;border:1px solid var(--bd)}
-    .divider{height:1px;background:var(--bd);margin:16px 0}
-    small.code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--muted)}
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>K-Agape – Registration</title>
+<style>
+  :root{
+    --fg:#0f1222; --muted:#6b7280; --bd:#e5e7eb; --ok:#14804a; --err:#c2410c;
+    --brand:#5533ff; --brand-50:#f4f3ff; --brand-600:#5533ff; --brand-700:#4b2ff0;
+    --bg:#ffffff;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji"; color:var(--fg); background:var(--bg)}
+  .container{max-width:860px;margin:24px auto;padding:0 16px}
+  header{margin:8px 0 18px}
+  h1{font-size:22px;margin:0 0 4px}
+  p.sub{color:var(--muted);margin:0}
+  .card{border:1px solid var(--bd);border-radius:14px;padding:18px}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  label{display:block;font-weight:600;margin:14px 0 6px}
+  input,select,textarea,button{width:100%;padding:10px 12px;border:1px solid var(--bd);border-radius:10px;font-size:15px}
+  textarea{resize:vertical}
+  input[type=file]{padding:8px}
+  button{cursor:pointer;background:var(--brand);color:white;border:0;font-weight:700}
+  button.ghost{background:#eef2ff;color:#1f2937}
+  button[disabled]{opacity:.6;cursor:not-allowed}
+  .muted{color:var(--muted);font-size:13px}
+  .ok{color:var(--ok)}
+  .err{color:var(--err)}
+  .actions{display:flex;gap:10px;justify-content:flex-end;margin-top:16px}
+  .stepper{display:flex;gap:8px;margin:12px 0 18px}
+  .dot{width:10px;height:10px;border-radius:999px;background:#d1d5db}
+  .dot.active{background:var(--brand)}
+  .hidden{display:none !important}
+  .chip-group{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 6px}
+  .chip{border:1px solid var(--bd);padding:8px 12px;border-radius:999px;background:#f8fafc;cursor:pointer}
+  .chip--active{background:var(--brand);color:#fff;border-color:var(--brand)}
+  .limit-note{font-size:12px;color:var(--muted);margin-top:-2px}
+  .inline{display:flex;align-items:center;gap:10px;margin-top:10px}
+  .inline input[type=checkbox]{width:auto}
+  .divider{height:1px;background:var(--bd);margin:16px 0}
+  .success{padding:18px;border:1px solid #d1fae5;background:#ecfdf5;border-radius:12px}
+  .preview{margin:6px 0;font-size:13px;color:var(--muted)}
+</style>
 </head>
 <body>
-  <div class="wrap">
-    <header>
-      <h1>K-Agape Registration</h1>
-      <p class="sub">Korea’s 1st multicultural Christian dating app. Please complete the form below—review typically takes 1–2 days.</p>
-    </header>
+<div class="container">
+  <header>
+    <h1>K-Agape — Registration</h1>
+    <p class="sub">Korea’s 1st multicultural Christian dating app. Please complete the form below.</p>
+  </header>
 
-    <!-- STEP 1: BASIC INFO -->
-    <section id="step1" class="step active">
-      <h3>1) Basic Info</h3>
-      <div class="row row2">
-        <div>
-          <label>Full name</label>
-          <input id="full_name" required>
-        </div>
-        <div>
-          <label>Display name</label>
-          <input id="display_name" placeholder="How others see your name">
-        </div>
-      </div>
-
-      <div class="row row2">
-        <div>
-          <label>Email</label>
-          <input id="email" type="email" required>
-        </div>
-        <div>
-          <label>Age</label>
-          <input id="age" type="number" min="18" max="99" placeholder="18+">
-        </div>
-      </div>
-
-      <div class="row row2">
-        <div>
-          <label>Location</label>
-          <input id="location" placeholder="City, Country">
-        </div>
-        <div>
-          <label>Occupation</label>
-          <input id="occupation">
-        </div>
-      </div>
-
-      <div class="row row2">
-        <div>
-          <label>Education</label>
-          <select id="education">
-            <option value="">Select…</option>
-            <option>High School</option><option>Bachelor</option><option>Master</option><option>Doctorate</option><option>Other</option>
-          </select>
-        </div>
-        <div>
-          <label>Relationship Goal</label>
-          <select id="relationship_goal">
-            <option>Friendship</option><option>Dating</option><option>Marriage</option>
-          </select>
-        </div>
-      </div>
-
-      <label>About Me</label>
-      <textarea id="about_me" placeholder="Tell others a little about you…"></textarea>
-
-      <div class="divider"></div>
-
-      <label>Interests (pick up to 5)</label>
-      <div id="interests" class="chips"></div>
-
-      <label style="margin-top:12px">Values (pick up to 5)</label>
-      <div id="values" class="chips"></div>
-
-      <div class="actions">
-        <button class="btn" id="next1">Continue</button>
-      </div>
-      <p id="m1" class="msg"></p>
-    </section>
-
-    <!-- STEP 2: BASIC FAITH INFO -->
-    <section id="step2" class="step">
-      <h3>2) Basic Faith Info</h3>
-
-      <label>Church Name</label>
-      <input id="church_name" placeholder="Your current church name">
-
-      <div class="row row2">
-        <div>
-          <label>Church Denomination</label>
-          <select id="denomination">
-            <option>Protestant</option><option>Catholic</option><option>Orthodox</option><option>Other</option>
-          </select>
-        </div>
-        <div>
-          <label>Attendance Frequency</label>
-          <select id="attendance">
-            <option>Weekly or more</option><option>2–3 times a month</option><option>Monthly or for major events</option>
-            <option>Rarely</option><option>Not currently attending</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="row row2">
-        <div>
-          <label>Years at Current Church</label>
-          <select id="years_at_church">
-            <option>Less than 1 year</option><option>1–3 years</option><option>3–5 years</option><option>More than 5 years</option>
-          </select>
-        </div>
-        <div>
-          <label>Ministry Involvement</label>
-          <select id="ministry">
-            <option>No</option><option>Yes</option>
-          </select>
-        </div>
-      </div>
-
-      <label>If serving, please explain</label>
-      <textarea id="ministry_note" placeholder="Role, frequency, etc. (optional)"></textarea>
-
-      <div class="actions">
-        <button class="btn secondary" id="back2">Back</button>
-        <button class="btn" id="next2">Continue</button>
-      </div>
-      <p id="m2" class="msg"></p>
-    </section>
-
-    <!-- STEP 3: FAITH BACKGROUND + VERIFICATION -->
-    <section id="step3" class="step">
-      <h3>3) Faith Background & Verification</h3>
-
-      <label>Foundational Beliefs (select all that apply)</label>
-      <div id="beliefs" class="chips"></div>
-
-      <div class="row row2" style="margin-top:8px">
-        <div>
-          <label>Jesus is the only way to salvation (John 14:6)?</label>
-          <select id="jesus_only"><option>Yes</option><option>No</option><option>Unsure</option></select>
-        </div>
-        <div>
-          <label>Bible authority</label>
-          <select id="bible"><option>Bible alone</option><option>Bible plus additional writings</option><option>Not sure</option></select>
-        </div>
-      </div>
-
-      <label>Have you been affiliated with movements outside orthodox Christianity?</label>
-      <select id="outside"><option>No</option><option>Yes — please explain</option></select>
-      <textarea id="outside_note" placeholder="Explain if you answered yes…" ></textarea>
-
-      <label>What are your views on sexual purity before marriage, cohabitation, and use of pornography?</label>
-      <textarea id="purity"></textarea>
-
-      <label>What role does faith play in your understanding of Christian dating and marriage?</label>
-      <textarea id="faith_role"></textarea>
-
-      <label>Spiritual or theological non-negotiables when considering a future spouse</label>
-      <textarea id="non_negotiables"></textarea>
-
-      <div class="divider"></div>
-
-      <label>Profile Photo for display</label>
-      <input id="photo" type="file" accept="image/*"/>
-      <img id="photo_prev" class="thumb" style="display:none"/>
-      <p class="muted">You can update or delete this later from your account settings after logging in.</p>
-
-      <div class="divider"></div>
-
-      <h4>Phone verification</h4>
-      <p class="muted">We use phone verification to keep accounts real and reduce spam. Standard SMS rates may apply.</p>
-      <div class="row row2">
-        <div>
-          <label>Phone (with country code, e.g. +82…)</label>
-          <input id="phone" placeholder="+82…"/>
-        </div>
-        <div class="row">
-          <div>
-            <label>&nbsp;</label>
-            <button class="btn" id="sendCode">Send code</button>
-          </div>
-        </div>
-      </div>
-      <div id="otpArea" style="display:none" class="row row2">
-        <div>
-          <label>Enter code</label>
-          <input id="otp"/>
-        </div>
-        <div class="row">
-          <div>
-            <label>&nbsp;</label>
-            <button class="btn" id="verifyCode">Verify</button>
-          </div>
-        </div>
-      </div>
-      <div id="recaptcha-container"></div>
-      <p id="phoneMsg" class="msg"></p>
-
-      <div class="divider"></div>
-
-      <h4>Selfie (optional)</h4>
-      <p class="muted">A quick selfie helps us review faster and reduce impersonation. You can skip this if you prefer.</p>
-      <div class="row row2">
-        <div>
-          <video id="cam" autoplay playsinline style="width:100%;max-width:240px;border-radius:10px;border:1px solid var(--bd)"></video>
-          <canvas id="canvas" style="display:none"></canvas>
-        </div>
-        <div class="row">
-          <div>
-            <label>&nbsp;</label>
-            <button class="btn" id="shotBtn">Take selfie</button>
-            <img id="selfie_prev" class="thumb" style="display:none"/>
-          </div>
-        </div>
-      </div>
-
-      <div class="divider"></div>
-
-      <label class="inline" style="gap:10px;margin-top:6px">
-        <input id="consent" type="checkbox" style="width:auto"/>
-        <span class="muted">I agree to the
-          <a href="https://glodymatayi.github.io/k-Agape-legal/terms.html" target="_blank">Terms</a> and
-          <a href="https://glodymatayi.github.io/k-Agape-legal/privacy.html" target="_blank">Privacy Policy</a>.
-        </span>
-      </label>
-
-      <div class="actions">
-        <button class="btn secondary" id="back3">Back</button>
-        <button class="btn" id="submitBtn">Submit</button>
-      </div>
-      <p id="m3" class="msg"></p>
-    </section>
-
-    <!-- SUCCESS -->
-    <section id="done" class="step">
-      <h3>Profile submitted 🎉</h3>
-      <p>Your profile creation has been successfully submitted. After review, a <b>password link</b> will be sent to your email so you can sign in to the app.</p>
-      <p class="muted">Thank you for joining K-Agape!</p>
-    </section>
+  <!-- Step indicator -->
+  <div class="stepper">
+    <div class="dot active" id="dot1"></div>
+    <div class="dot" id="dot2"></div>
+    <div class="dot" id="dot3"></div>
   </div>
 
-  <!-- Firebase v10 (modules) -->
-  <script type="module">
-    // ====== Config ======
-    const SELFIE_REQUIRED = false; // set to true if you want to require a selfie
+  <!-- STEP 1: Basic Info -->
+  <section id="step1" class="card">
+    <h2 style="margin:0 0 6px;font-size:18px">Basic Info</h2>
+    <p class="muted">Tell us about yourself.</p>
 
-    // Firebase SDKs
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
-    import { initializeAppCheck, ReCaptchaV3Provider } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app-check.js";
-    import { getFirestore, addDoc, collection, serverTimestamp, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
-    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-storage.js";
-    import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-auth.js";
+    <label>Full name</label>
+    <input id="full_name" placeholder="Enter your full name" />
 
-    // ---- Your Firebase config ----
-    const firebaseConfig = {
-      apiKey: "AIzaSyDozLO7ktrWwk7il59dJZB8jcTYVK11qOE",
-      authDomain: "k-agape-app.firebaseapp.com",
-      projectId: "k-agape-app",
-      storageBucket: "k-agape-app.firebasestorage.app",
-      messagingSenderId: "279368410175",
-      appId: "1:279368410175:web:6916f105a33549dd9ac48a"
-    };
-    const app = initializeApp(firebaseConfig);
+    <div class="row">
+      <div>
+        <label>Display name</label>
+        <input id="display_name" placeholder="How should others see your name?" />
+      </div>
+      <div>
+        <label>Email</label>
+        <input id="email" type="email" placeholder="name@example.com" />
+      </div>
+    </div>
 
-    // App Check (reCAPTCHA v3)
+    <div class="row">
+      <div>
+        <label>Age</label>
+        <input id="age" type="number" min="18" max="120" placeholder="e.g., 27" />
+      </div>
+      <div>
+        <label>Location</label>
+        <input id="location" placeholder="City / Area" />
+      </div>
+    </div>
+
+    <div class="row">
+      <div>
+        <label>Occupation</label>
+        <input id="occupation" placeholder="What do you do for work?" />
+      </div>
+      <div>
+        <label>Education</label>
+        <input id="education" placeholder="Your education level" />
+      </div>
+    </div>
+
+    <label>Relationship goal</label>
+    <div id="goal" class="chip-group" role="radiogroup" aria-label="Relationship goal">
+      <button type="button" class="chip chip--active" data-val="Friendship">Friendship</button>
+      <button type="button" class="chip" data-val="Dating">Dating</button>
+      <button type="button" class="chip" data-val="Marriage">Marriage</button>
+    </div>
+
+    <label>About me</label>
+    <textarea id="about_me" rows="4" placeholder="Tell others a little about you..."></textarea>
+
+    <label>Interests</label>
+    <div id="interests" class="chip-group" aria-label="Interests (select up to 5)">
+      <button class="chip" type="button" data-val="Travel">Travel</button>
+      <button class="chip" type="button" data-val="Music">Music</button>
+      <button class="chip" type="button" data-val="Movies">Movies</button>
+      <button class="chip" type="button" data-val="Fitness">Fitness</button>
+      <button class="chip" type="button" data-val="Cooking">Cooking</button>
+      <button class="chip" type="button" data-val="Reading">Reading</button>
+      <button class="chip" type="button" data-val="Photography">Photography</button>
+      <button class="chip" type="button" data-val="Art">Art</button>
+      <button class="chip" type="button" data-val="Dancing">Dancing</button>
+      <button class="chip" type="button" data-val="Hiking">Hiking</button>
+      <button class="chip" type="button" data-val="Gaming">Gaming</button>
+      <button class="chip" type="button" data-val="Sports">Sports</button>
+      <button class="chip" type="button" data-val="Fashion">Fashion</button>
+      <button class="chip" type="button" data-val="Food">Food</button>
+      <button class="chip" type="button" data-val="Coffee">Coffee</button>
+      <button class="chip" type="button" data-val="Beach">Beach</button>
+      <button class="chip" type="button" data-val="Cats">Cats</button>
+      <button class="chip" type="button" data-val="Dogs">Dogs</button>
+    </div>
+    <div class="limit-note">Select up to 5.</div>
+
+    <label>Values</label>
+    <div id="values" class="chip-group" aria-label="Values (select up to 5)">
+      <button class="chip" type="button" data-val="Family">Family</button>
+      <button class="chip" type="button" data-val="Honesty">Honesty</button>
+      <button class="chip" type="button" data-val="Discipline">Discipline</button>
+      <button class="chip" type="button" data-val="Patience">Patience</button>
+      <button class="chip" type="button" data-val="Integrity">Integrity</button>
+      <button class="chip" type="button" data-val="Reading">Reading</button>
+      <button class="chip" type="button" data-val="Gratitude">Gratitude</button>
+      <button class="chip" type="button" data-val="Responsibility">Responsibility</button>
+      <button class="chip" type="button" data-val="Empathy">Empathy</button>
+      <button class="chip" type="button" data-val="Self-discipline">Self-discipline</button>
+      <button class="chip" type="button" data-val="Relaxation">Relaxation</button>
+      <button class="chip" type="button" data-val="Dreams chasing">Dreams chasing</button>
+      <button class="chip" type="button" data-val="Life Balance">Life Balance</button>
+    </div>
+    <div class="limit-note">Select up to 5.</div>
+
+    <div class="actions">
+      <button class="ghost" disabled>Back</button>
+      <button id="toStep2">Continue</button>
+    </div>
+  </section>
+
+  <!-- STEP 2: Basic Faith Info -->
+  <section id="step2" class="card hidden">
+    <h2 style="margin:0 0 6px;font-size:18px">Basic Faith Info</h2>
+    <p class="muted">A few questions to understand your faith background.</p>
+
+    <label>Church name</label>
+    <input id="church_name" placeholder="Your current church name" />
+
+    <label>Church denomination</label>
+    <div id="denomination" class="chip-group" role="radiogroup" aria-label="Denomination">
+      <button class="chip chip--active" type="button" data-val="Protestant">Protestant</button>
+      <button class="chip" type="button" data-val="Catholic">Catholic</button>
+      <button class="chip" type="button" data-val="Orthodox">Orthodox</button>
+      <button class="chip" type="button" data-val="Other">Other</button>
+    </div>
+
+    <label>Church attendance frequency</label>
+    <div id="attendance" class="chip-group" role="radiogroup">
+      <button class="chip chip--active" type="button" data-val="Weekly or more">Weekly or more</button>
+      <button class="chip" type="button" data-val="2–3 times a month">2–3 times a month</button>
+      <button class="chip" type="button" data-val="Monthly / major events">Monthly / major events</button>
+      <button class="chip" type="button" data-val="Rarely">Rarely</button>
+      <button class="chip" type="button" data-val="Not attending">Not currently attending</button>
+    </div>
+
+    <label>Years at current church</label>
+    <div id="years" class="chip-group" role="radiogroup">
+      <button class="chip chip--active" type="button" data-val="Less than 1 year">Less than 1 year</button>
+      <button class="chip" type="button" data-val="1–3 years">1–3 years</button>
+      <button class="chip" type="button" data-val="3–5 years">3–5 years</button>
+      <button class="chip" type="button" data-val="More than 5 years">More than 5 years</button>
+    </div>
+
+    <label>Ministry involvement</label>
+    <div id="ministry" class="chip-group" role="radiogroup">
+      <button class="chip" type="button" data-val="Yes">Yes – please specify</button>
+      <button class="chip chip--active" type="button" data-val="No">No</button>
+    </div>
+    <textarea id="ministry_explain" rows="3" placeholder="Please explain if you answered yes..." style="display:none"></textarea>
+
+    <div class="divider"></div>
+
+    <h3 style="margin:0 0 6px;font-size:16px">Personal Faith</h3>
+
+    <label>Do you believe that salvation is by grace through faith alone in Jesus Christ, and not by works or religious rituals?</label>
+    <div id="salvation" class="chip-group" role="radiogroup">
+      <button class="chip chip--active" type="button" data-val="Yes">Yes</button>
+      <button class="chip" type="button" data-val="No">No</button>
+      <button class="chip" type="button" data-val="Unsure">Unsure</button>
+    </div>
+
+    <label>Testimony</label>
+    <textarea id="testimony" rows="4" placeholder="Share your testimony of how you came to know Jesus Christ as your Lord and Savior..."></textarea>
+
+    <label>What does the gospel mean to you, in your own words?</label>
+    <textarea id="gospel_meaning" rows="3"></textarea>
+
+    <div class="actions">
+      <button class="ghost" id="back1">Back</button>
+      <button id="toStep3">Continue</button>
+    </div>
+  </section>
+
+  <!-- STEP 3: Faith Background + Verification + Files -->
+  <section id="step3" class="card hidden">
+    <h2 style="margin:0 0 6px;font-size:18px">Faith Background & Verification</h2>
+    <p class="muted">Please affirm your core beliefs and verify your profile.</p>
+
+    <label>Which foundational Christian beliefs do you affirm? (select all that apply)</label>
+    <div id="core_beliefs" class="chip-group">
+      <button class="chip" type="button" data-val="Trinity">Trinity</button>
+      <button class="chip" type="button" data-val="Deity of Christ">Deity of Christ</button>
+      <button class="chip" type="button" data-val="Resurrection of Jesus">Resurrection of Jesus</button>
+      <button class="chip" type="button" data-val="Authority of Scripture">Authority of Scripture</button>
+      <button class="chip" type="button" data-val="Salvation by grace through faith">Salvation by grace through faith</button>
+      <button class="chip" type="button" data-val="Indwelling of the Holy Spirit">Indwelling of the Holy Spirit</button>
+      <button class="chip" type="button" data-val="Visible return of Christ">Visible return of Christ</button>
+      <button class="chip" type="button" data-val="Reality of heaven and earth">Reality of heaven and earth</button>
+      <button class="chip" type="button" data-val="Church as the Body of Christ">Church as the Body of Christ</button>
+    </div>
+
+    <label>Do you believe Jesus is the only way to salvation (John 14:6)?</label>
+    <div id="jesus_only_way" class="chip-group" role="radiogroup">
+      <button class="chip chip--active" type="button" data-val="Yes">Yes</button>
+      <button class="chip" type="button" data-val="No">No</button>
+      <button class="chip" type="button" data-val="Unsure">Unsure</button>
+    </div>
+
+    <label>Do you believe the Bible is the only authoritative Word of God?</label>
+    <div id="bible_authority" class="chip-group" role="radiogroup">
+      <button class="chip chip--active" type="button" data-val="Bible alone">Bible alone</button>
+      <button class="chip" type="button" data-val="Bible plus additional writings">Bible plus additional writings</button>
+      <button class="chip" type="button" data-val="Not sure">Not sure</button>
+    </div>
+
+    <label>Have you ever been part of or influenced by any group that is not considered true Christianity (e.g., Jehovah’s Witnesses, Mormons, Shincheonji, New Age)?</label>
+    <div id="outsideGroup" class="chip-group" role="radiogroup" aria-label="Outside orthodox Christianity">
+      <button type="button" class="chip" data-val="yes">Yes – please explain</button>
+      <button type="button" class="chip chip--active" data-val="no">No</button>
+    </div>
+    <textarea id="outsideGroup_explain" rows="3" placeholder="Please explain if you answered yes..." style="display:none"></textarea>
+
+    <label>What are your views on sexual purity before marriage, cohabitation before marriage, and use of pornography?</label>
+    <textarea id="sexual_purity" rows="3" placeholder="Share your biblical perspective on these topics..."></textarea>
+
+    <label>What role does faith play in your understanding of Christian dating and marriage?</label>
+    <textarea id="faith_role" rows="3"></textarea>
+
+    <label>What are your spiritual or theological non-negotiables when considering a future spouse?</label>
+    <textarea id="non_negotiables" rows="3"></textarea>
+
+    <div class="divider"></div>
+    <h3 style="margin:0 0 6px;font-size:16px">Profile picture</h3>
+    <p class="muted">Used as your display photo in the app (you can change/delete it later in account settings).</p>
+    <input id="profile_photo" type="file" accept="image/*" />
+
+    <h3 style="margin:14px 0 6px;font-size:16px">Profile verification</h3>
+    <label>Phone number</label>
+    <div class="row">
+      <input id="phone" placeholder="+821012345678" inputmode="tel" />
+      <button type="button" id="sendCodeBtn">Send code</button>
+    </div>
+    <div id="recaptcha-container"></div>
+    <div id="codeRow" class="row" style="display:none">
+      <input id="smsCode" placeholder="6-digit code" inputmode="numeric" maxlength="6" />
+      <button type="button" id="verifyCodeBtn">Verify code</button>
+    </div>
+    <p id="phoneMsg" class="muted"></p>
+
+    <label>Selfie (optional, recommended)</label>
+    <input id="selfie" type="file" accept="image/*" capture="user" />
+    <p class="preview">Selfie helps us reduce fake profiles. Phone number verification is required; selfie is optional but encouraged.</p>
+
+    <label class="inline" style="gap:10px;margin-top:10px">
+      <input id="consent" type="checkbox" />
+      <span class="muted">
+        I agree to the <a href="https://glodymatayi.github.io/k-Agape-legal/terms.html" target="_blank">Terms</a> and
+        <a href="https://glodymatayi.github.io/k-Agape-legal/privacy.html" target="_blank">Privacy Policy</a>.
+      </span>
+    </label>
+
+    <div class="actions">
+      <button class="ghost" id="back2">Back</button>
+      <button id="submitBtn">Submit</button>
+    </div>
+
+    <p id="formMsg" class="muted"></p>
+  </section>
+
+  <!-- SUCCESS -->
+  <section id="success" class="card hidden">
+    <div class="success">
+      <h2 style="margin:0 0 8px;font-size:18px">Profile submitted!</h2>
+      <p style="margin:0 0 8px">Thank you — your profile has been received for review.</p>
+      <p style="margin:0">After approval, a password link will be sent to your email so you can sign in to the app.</p>
+    </div>
+  </section>
+</div>
+
+<script type="module">
+  /*************** Firebase imports ***************/
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
+  import { initializeAppCheck, ReCaptchaV3Provider } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app-check.js";
+  import { getFirestore, addDoc, collection, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
+  import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-storage.js";
+  import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-auth.js";
+
+  /*************** CONFIG — REPLACE ***************/
+  const firebaseConfig = YOUR_FIREBASE_CONFIG; // <-- paste your Firebase Web config object (keep it as an object literal)
+
+  // Optional but recommended: App Check with reCAPTCHA v3
+  const APPCHECK_SITE_KEY = "YOUR_APPCHECK_RECAPTCHA_V3_SITE_KEY"; // <-- replace
+
+  /*************** Firebase init ***************/
+  const app = initializeApp(firebaseConfig);
+  if (APPCHECK_SITE_KEY && APPCHECK_SITE_KEY !== "YOUR_APPCHECK_RECAPTCHA_V3_SITE_KEY") {
     initializeAppCheck(app, {
-      provider: new ReCaptchaV3Provider("6LdDAtArAAAAADX7Q8hlxjdsOeLXkv6wcC6c4R9R"),
+      provider: new ReCaptchaV3Provider(APPCHECK_SITE_KEY),
       isTokenAutoRefreshEnabled: true,
     });
+  }
+  const db = getFirestore(app);
+  const storage = getStorage(app);
+  const auth = getAuth(app);
+  auth.useDeviceLanguage();
 
-    const db = getFirestore(app);
-    const storage = getStorage(app);
-    const auth = getAuth(app);
-
-    // ====== UI helpers ======
-    const $ = (id)=>document.getElementById(id);
-    const show = (id)=>{ for(const s of document.querySelectorAll('.step')) s.classList.remove('active'); $(id).classList.add('active'); };
-
-    // Interests & Values chips
-    const interestOptions = ["Travel","Music","Movies","Fitness","Cooking","Reading","Photography","Art","Dancing","Hiking","Gaming","Sports","Fashion","Food","Coffee","Wine","Yoga","Beach","Dogs","Cats"];
-    const valueOptions = ["Family","Honesty","Discipline","Patience","Integrity","Reading","Gratitude","Responsibility","Courage","Empathy","Self-discipline","Wisdom","Relaxation","Dreams chasing","Free mind","Life balance"];
-    function renderChips(containerId, options, max=5){
-      const el=$(containerId); el.dataset.max=max; el.dataset.sel="[]";
-      options.forEach(txt=>{
-        const c=document.createElement('div'); c.className='chip'; c.textContent=txt;
-        c.addEventListener('click',()=>{
-          const sel=JSON.parse(el.dataset.sel);
-          const idx=sel.indexOf(txt);
-          if(idx>=0){ sel.splice(idx,1); c.classList.remove('on'); }
-          else{
-            if(sel.length>=max){ flash(`${containerId} can have up to ${max}`, 'm1'); return; }
-            sel.push(txt); c.classList.add('on');
-          }
-          el.dataset.sel=JSON.stringify(sel);
-        });
-        el.appendChild(c);
-      });
-    }
-    function getChips(containerId){ return JSON.parse($(containerId).dataset.sel||"[]"); }
-    function flash(msg, where='m3', ok=false){ const el=$(where); el.textContent=msg; el.className='msg '+(ok?'ok':'err'); setTimeout(()=>{el.textContent='';}, 4000); }
-
-    renderChips('interests', interestOptions, 5);
-    renderChips('values', valueOptions, 5);
-
-    // Beliefs chips
-    const beliefOptions = [
-      "Trinity","Deity of Christ","Resurrection of Jesus","Authority of Scripture",
-      "Salvation by grace through faith","Indwelling of the Holy Spirit",
-      "Visible return of Christ","Reality of heaven and earth","The Church as the Body of Christ"
-    ];
-    renderChips('beliefs', beliefOptions, 20);
-
-    // Step nav
-    $('next1').onclick=()=>{
-      if(!$('full_name').value.trim() || !$('email').value.trim()){
-        flash('Please provide at least your full name and email.', 'm1'); return;
-      }
-      show('step2');
-    };
-    $('back2').onclick=()=>show('step1');
-    $('next2').onclick=()=>show('step3');
-    $('back3').onclick=()=>show('step2');
-
-    // Photo preview
-    $('photo').addEventListener('change', e=>{
-      const f=e.target.files[0]; if(!f){$('photo_prev').style.display='none';return;}
-      const url=URL.createObjectURL(f);
-      $('photo_prev').src=url; $('photo_prev').style.display='block';
+  /*************** Helpers ***************/
+  const $ = (id)=>document.getElementById(id);
+  const show = (id)=>$(id).classList.remove("hidden");
+  const hide = (id)=>$(id).classList.add("hidden");
+  const stepDots = (n)=>{
+    ["dot1","dot2","dot3"].forEach((id,i)=>{
+      const el = $(id);
+      if(i===n-1) el.classList.add("active"); else el.classList.remove("active");
     });
-
-    // Camera for selfie
-    let selfieBlob=null;
-    try{
-      const stream=await navigator.mediaDevices.getUserMedia({video:true});
-      $('cam').srcObject=stream;
-    }catch(e){ /* ignore if camera not allowed */ }
-    $('shotBtn').onclick=()=>{
-      const v=$('cam'); if(!v.videoWidth){flash('Camera not available (you can skip selfie).'); return;}
-      const c=$('canvas'); c.width=v.videoWidth; c.height=v.videoHeight;
-      const ctx=c.getContext('2d'); ctx.drawImage(v,0,0);
-      c.toBlob(b=>{
-        if(b){ selfieBlob=b; const url=URL.createObjectURL(b); $('selfie_prev').src=url; $('selfie_prev').style.display='block'; flash('Selfie captured.', 'm3', true); }
-      }, 'image/jpeg', 0.9);
-    };
-
-    // Phone verification
-    let appVerifier=null, confirmationResult=null, phoneVerified=false;
-    function initRecaptcha(){
-      if(appVerifier) return;
-      appVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', { size:'invisible' });
-    }
-    $('sendCode').onclick=async()=>{
-      try{
-        initRecaptcha();
-        const phone=$('phone').value.trim();
-        if(!phone.startsWith('+')){ flash('Include country code, e.g. +82...', 'phoneMsg'); return; }
-        confirmationResult = await signInWithPhoneNumber(auth, phone, appVerifier);
-        $('otpArea').style.display='grid';
-        flash('Code sent. Please check your SMS.', 'phoneMsg', true);
-      }catch(err){ flash(err.message||'Failed to send code.', 'phoneMsg'); }
-    };
-    $('verifyCode').onclick=async()=>{
-      try{
-        const code=$('otp').value.trim();
-        await confirmationResult.confirm(code);
-        phoneVerified=true;
-        flash('Phone verified ✔', 'phoneMsg', true);
-      }catch(err){ flash('Invalid code. Try again.', 'phoneMsg'); }
-    };
-
-    // Submit
-    $('submitBtn').onclick=async()=>{
-      try{
-        // minimal checks
-        if(!$('consent').checked){ flash('Please accept Terms and Privacy.', 'm3'); return; }
-        if(!phoneVerified){ flash('Please verify your phone first.', 'm3'); return; }
-        if(SELFIE_REQUIRED && !selfieBlob){ flash('Selfie is required to submit.', 'm3'); return; }
-
-        // Collect data
-        const data={
-          created_time: serverTimestamp(),
-          status: "pending_review",
-          // step1
-          full_name: $('full_name').value.trim(),
-          display_name: $('display_name').value.trim(),
-          email: $('email').value.trim().toLowerCase(),
-          age: $('age').value ? Number($('age').value) : null,
-          location: $('location').value.trim(),
-          occupation: $('occupation').value.trim(),
-          education: $('education').value,
-          relationship_goal: $('relationship_goal').value,
-          about_me: $('about_me').value.trim(),
-          interests: getChips('interests'),
-          values: getChips('values'),
-          // step2
-          church_name: $('church_name').value.trim(),
-          denomination: $('denomination').value,
-          attendance: $('attendance').value,
-          years_at_church: $('years_at_church').value,
-          ministry: $('ministry').value,
-          ministry_note: $('ministry_note').value.trim(),
-          // step3
-          beliefs: getChips('beliefs'),
-          jesus_only: $('jesus_only').value,
-          bible: $('bible').value,
-          outside: $('outside').value,
-          outside_note: $('outside_note').value.trim(),
-          purity: $('purity').value.trim(),
-          faith_role: $('faith_role').value.trim(),
-          non_negotiables: $('non_negotiables').value.trim(),
-          consent: true,
-          phone_verified: true
-        };
-
-        // Create doc first
-        const ref = await addDoc(collection(db, "interested_users"), data);
-
-        // Upload files if any
-        const updates={};
-        const photoFile=$('photo').files[0];
-        if(photoFile){
-          const pRef = refFrom(`interested_users/${ref.id}/display_photo.jpg`);
-          await uploadBytes(pRef, photoFile);
-          updates.photo_url = await getDownloadURL(pRef);
-        }
-        if(selfieBlob){
-          const sRef = refFrom(`interested_users/${ref.id}/selfie.jpg`);
-          await uploadBytes(sRef, selfieBlob);
-          updates.selfie_url = await getDownloadURL(sRef);
-        }
-        if(Object.keys(updates).length) await updateDoc(doc(db,'interested_users',ref.id), updates);
-
-        show('done');
-      }catch(err){
-        console.error(err); flash(err.message||'Submission failed. Please try again.', 'm3');
+  };
+  const chipRadio = (groupId, onChange)=>{
+    const g = $(groupId);
+    g.addEventListener("click",(e)=>{
+      const b = e.target.closest("button.chip");
+      if(!b) return;
+      [...g.querySelectorAll("button")].forEach(x=>x.classList.remove("chip--active"));
+      b.classList.add("chip--active");
+      if(onChange) onChange(b.dataset.val);
+    });
+  };
+  const chipMulti = (groupId, limit=null)=>{
+    const g = $(groupId);
+    g.addEventListener("click",(e)=>{
+      const b = e.target.closest("button.chip");
+      if(!b) return;
+      const active = g.querySelectorAll(".chip--active").length;
+      if(b.classList.contains("chip--active")) {
+        b.classList.remove("chip--active");
+      } else {
+        if(limit && active>=limit) return; // enforce limit
+        b.classList.add("chip--active");
       }
-    };
+    });
+  };
+  const getRadio = (groupId)=>{
+    const el = document.querySelector(`#${groupId} .chip--active`);
+    return el ? el.dataset.val : "";
+  };
+  const getMulti = (groupId)=>[...document.querySelectorAll(`#${groupId} .chip--active`)].map(b=>b.dataset.val);
 
-    // small helper
-    const refFrom = (path)=> ref(storage, path);
-  </script>
+  /*************** Step navigation ***************/
+  $("toStep2").addEventListener("click", ()=>{
+    // quick requireds on step1
+    if(!$("full_name").value.trim() || !$("email").value.trim()){
+      alert("Please enter at least your full name and email.");
+      return;
+    }
+    hide("step1"); show("step2"); stepDots(2);
+  });
+  $("back1").addEventListener("click", ()=>{ hide("step2"); show("step1"); stepDots(1); });
+  $("toStep3").addEventListener("click", ()=>{ hide("step2"); show("step3"); stepDots(3); });
+  $("back2").addEventListener("click", ()=>{ hide("step3"); show("step2"); stepDots(2); });
+
+  /*************** Chips & conditional areas ***************/
+  chipRadio("goal");
+  chipMulti("interests", 5);
+  chipMulti("values", 5);
+  chipRadio("denomination");
+  chipRadio("attendance");
+  chipRadio("years");
+  chipRadio("salvation");
+  chipRadio("jesus_only_way");
+  chipRadio("bible_authority");
+
+  chipRadio("ministry", (val)=>{
+    $("ministry_explain").style.display = (val==="Yes") ? "block" : "none";
+  });
+
+  // Updated outsideGroup question
+  chipRadio("outsideGroup", (val)=>{
+    $("outsideGroup_explain").style.display = (val==="yes") ? "block" : "none";
+  });
+
+  /*************** Phone verification ***************/
+  let recaptchaVerifier, confirmationResult, verifiedPhone = "";
+
+  window.addEventListener("DOMContentLoaded", ()=>{
+    recaptchaVerifier = new RecaptchaVerifier(auth, "recaptcha-container", { size: "invisible" });
+  });
+
+  $("sendCodeBtn").addEventListener("click", async ()=>{
+    const phone = $("phone").value.trim();
+    const msg = $("phoneMsg");
+    msg.textContent = ""; msg.className = "muted";
+    if(!phone) { msg.textContent = "Enter a phone number."; msg.className="err"; return; }
+    try{
+      confirmationResult = await signInWithPhoneNumber(auth, phone, recaptchaVerifier);
+      $("codeRow").style.display = "grid";
+      msg.textContent = "Code sent. Please check your SMS.";
+    }catch(e){
+      console.error(e);
+      msg.textContent = e.message || "Failed to send code.";
+      msg.className = "err";
+      try { recaptchaVerifier.clear(); } catch {}
+      recaptchaVerifier = new RecaptchaVerifier(auth, "recaptcha-container", { size: "invisible" });
+    }
+  });
+
+  $("verifyCodeBtn").addEventListener("click", async ()=>{
+    const code = $("smsCode").value.trim();
+    const msg = $("phoneMsg");
+    if(!code){ msg.textContent="Enter the 6-digit code."; msg.className="err"; return; }
+    try{
+      const result = await confirmationResult.confirm(code);
+      verifiedPhone = result.user.phoneNumber || $("phone").value.trim();
+      msg.textContent = "Phone verified: " + verifiedPhone;
+      msg.className = "ok";
+    }catch(e){
+      console.error(e);
+      msg.textContent = e.message || "Invalid code. Please try again.";
+      msg.className = "err";
+    }
+  });
+
+  /*************** Submit ***************/
+  $("submitBtn").addEventListener("click", async ()=>{
+    const m = $("formMsg");
+    m.textContent=""; m.className="muted";
+
+    if(!$("consent").checked){
+      m.textContent = "Please agree to the Terms and Privacy Policy."; m.className="err"; return;
+    }
+    if(!verifiedPhone){
+      m.textContent = "Please verify your phone number."; m.className="err"; return;
+    }
+
+    const btn = $("submitBtn"); btn.disabled = true;
+
+    try{
+      // Upload files first and collect URLs
+      const uploads = [];
+      let profile_url = "", selfie_url = "";
+
+      const tempId = crypto.randomUUID();
+
+      const profileFile = $("profile_photo").files[0] || null;
+      if(profileFile){
+        const pRef = ref(storage, `interested_users/${tempId}/profile_${Date.now()}_${profileFile.name}`);
+        uploads.push(uploadBytes(pRef, profileFile).then(()=>getDownloadURL(pRef)).then(u=>{ profile_url=u; }));
+      }
+
+      const selfieFile = $("selfie").files[0] || null;
+      if(selfieFile){
+        const sRef = ref(storage, `interested_users/${tempId}/selfie_${Date.now()}_${selfieFile.name}`);
+        uploads.push(uploadBytes(sRef, selfieFile).then(()=>getDownloadURL(sRef)).then(u=>{ selfie_url=u; }));
+      }
+
+      if(uploads.length) await Promise.all(uploads);
+
+      // Build payload
+      const data = {
+        // step 1
+        full_name: $("full_name").value.trim(),
+        display_name: $("display_name").value.trim(),
+        email: $("email").value.trim().toLowerCase(),
+        age: $("age").value.trim(),
+        location: $("location").value.trim(),
+        occupation: $("occupation").value.trim(),
+        education: $("education").value.trim(),
+        relationship_goal: getRadio("goal"),
+        about_me: $("about_me").value.trim(),
+        interests: getMulti("interests"),
+        values: getMulti("values"),
+
+        // step 2
+        church_name: $("church_name").value.trim(),
+        denomination: getRadio("denomination"),
+        attendance: getRadio("attendance"),
+        years_at_church: getRadio("years"),
+        ministry: getRadio("ministry"),
+        ministry_explain: $("ministry_explain").style.display==="block" ? $("ministry_explain").value.trim() : "",
+        salvation_by_grace: getRadio("salvation"),
+        testimony: $("testimony").value.trim(),
+        gospel_meaning: $("gospel_meaning").value.trim(),
+
+        // step 3
+        core_beliefs: getMulti("core_beliefs"),
+        jesus_only_way: getRadio("jesus_only_way"),
+        bible_authority: getRadio("bible_authority"),
+        outside_group: getRadio("outsideGroup"),
+        outside_group_explain: $("outsideGroup_explain").style.display==="block" ? $("outsideGroup_explain").value.trim() : "",
+        sexual_purity: $("sexual_purity").value.trim(),
+        faith_role: $("faith_role").value.trim(),
+        non_negotiables: $("non_negotiables").value.trim(),
+
+        // verification
+        phone_number: verifiedPhone || $("phone").value.trim(),
+        phone_verified: !!verifiedPhone,
+        profile_photo_url: profile_url,
+        selfie_url,
+
+        // meta
+        status: "pending",
+        created_time: serverTimestamp(),
+        consent: true,
+        source: "web_registration_v1",
+      };
+
+      await addDoc(collection(db, "interested_users"), data);
+
+      hide("step1"); hide("step2"); hide("step3"); show("success");
+    }catch(err){
+      console.error(err);
+      m.textContent = err.message || "Submission failed. Please try again.";
+      m.className = "err";
+    }finally{
+      btn.disabled = false;
+    }
+  });
+</script>
 </body>
 </html>

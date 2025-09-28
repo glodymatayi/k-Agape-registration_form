@@ -39,7 +39,6 @@
     .thumb{display:block;margin-top:8px;max-width:180px;border-radius:10px;border:1px solid var(--bd)}
     .divider{height:1px;background:var(--bd);margin:16px 0}
     small.code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--muted)}
-
     /* Chip radio (Yes/No) */
     .chip-group{display:flex;gap:8px;margin:8px 0 6px}
     .chip-group .chip{border-radius:999px;background:#0d1019}
@@ -188,7 +187,7 @@
         </div>
       </div>
 
-      <!-- NEW: chip radio version of “outside movements” -->
+      <!-- Outside movements (chip radio) -->
       <label>Have you ever been part of or influenced by any group that is not considered true Christianity (like Jehovah’s Witnesses, Mormons, Shincheonji, or New Age)?</label>
       <div id="outsideGroup" class="chip-group" role="radiogroup" aria-label="Outside orthodox Christianity">
         <button type="button" class="chip" data-val="yes">Yes – please explain</button>
@@ -229,7 +228,6 @@
         </div>
       </div>
 
-      <!-- Code row (shows after SMS is sent) -->
       <div id="codeRow" class="row row2" style="display:none">
         <div>
           <label>Enter code</label>
@@ -242,7 +240,7 @@
           </div>
         </div>
       </div>
-      <!-- Invisible reCAPTCHA container required by Firebase Auth -->
+
       <div id="recaptcha-container"></div>
       <p id="phoneMsg" class="msg muted"></p>
 
@@ -291,17 +289,14 @@
 
   <!-- Firebase v10 (modules) -->
   <script type="module">
-    // ====== Config ======
-    const SELFIE_REQUIRED = false; // set to true if you want to require a selfie
+    const SELFIE_REQUIRED = false;
 
-    // Firebase SDKs
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
     import { initializeAppCheck, ReCaptchaV3Provider } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app-check.js";
     import { getFirestore, addDoc, collection, serverTimestamp, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
     import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-storage.js";
     import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-auth.js";
 
-    // ---- Your Firebase config (unchanged) ----
     const firebaseConfig = {
       apiKey: "AIzaSyDozLO7ktrWwk7il59dJZB8jcTYVK11qOE",
       authDomain: "k-agape-app.firebaseapp.com",
@@ -312,7 +307,6 @@
     };
     const app = initializeApp(firebaseConfig);
 
-    // App Check (reCAPTCHA v3) – optional but recommended
     initializeAppCheck(app, {
       provider: new ReCaptchaV3Provider("6LdDAtArAAAAADX7Q8hlxjdsOeLXkv6wcC6c4R9R"),
       isTokenAutoRefreshEnabled: true,
@@ -321,12 +315,10 @@
     const db = getFirestore(app);
     const storage = getStorage(app);
 
-    // ====== Helpers ======
     const $ = (id)=>document.getElementById(id);
     const show = (id)=>{ for(const s of document.querySelectorAll('.step')) s.classList.remove('active'); $(id).classList.add('active'); };
     function flash(msg, where='m3', ok=false){ const el=$(where); el.textContent=msg; el.className='msg '+(ok?'ok':'err'); setTimeout(()=>{el.textContent='';}, 4000); }
 
-    // Chips (multi-select)
     function renderChips(containerId, options, max=5){
       const el=$(containerId); el.dataset.max=max; el.dataset.sel="[]";
       options.forEach(txt=>{
@@ -346,7 +338,6 @@
     }
     function getChips(containerId){ return JSON.parse($(containerId).dataset.sel||"[]"); }
 
-    // Interest/Value/Beliefs lists
     renderChips('interests', ["Travel","Music","Movies","Fitness","Cooking","Reading","Photography","Art","Dancing","Hiking","Gaming","Sports","Fashion","Food","Coffee","Wine","Yoga","Beach","Dogs","Cats"], 5);
     renderChips('values', ["Family","Honesty","Discipline","Patience","Integrity","Reading","Gratitude","Responsibility","Courage","Empathy","Self-discipline","Wisdom","Relaxation","Dreams chasing","Free mind","Life balance"], 5);
     renderChips('beliefs', [
@@ -355,7 +346,6 @@
       "Visible return of Christ","Reality of heaven and earth","The Church as the Body of Christ"
     ], 20);
 
-    // Step nav
     $('next1').onclick=()=>{
       if(!$('full_name').value.trim() || !$('email').value.trim()){
         flash('Please provide at least your full name and email.', 'm1'); return;
@@ -366,19 +356,17 @@
     $('next2').onclick=()=>show('step3');
     $('back3').onclick=()=>show('step2');
 
-    // Photo preview
     $('photo').addEventListener('change', e=>{
       const f=e.target.files[0]; if(!f){$('photo_prev').style.display='none';return;}
       const url=URL.createObjectURL(f);
       $('photo_prev').src=url; $('photo_prev').style.display='block';
     });
 
-    // Selfie capture (optional)
     let selfieBlob=null;
     try{
       const stream=await navigator.mediaDevices.getUserMedia({video:true});
       $('cam').srcObject=stream;
-    }catch(e){ /* camera blocked – still optional */ }
+    }catch(e){}
     $('shotBtn').onclick=()=>{
       const v=$('cam'); if(!v.videoWidth){flash('Camera not available (you can skip selfie).'); return;}
       const c=$('canvas'); c.width=v.videoWidth; c.height=v.videoHeight;
@@ -388,27 +376,33 @@
       }, 'image/jpeg', 0.9);
     };
 
-    // ====== Phone verification (updated) ======
+    /* ===== Phone verification (singleton reCAPTCHA) ===== */
     const auth = getAuth(app);
     auth.useDeviceLanguage();
 
-    let recaptchaVerifier;
+    let recaptchaVerifier;      // singleton
     let confirmationResult;
     let verifiedPhone = "";
 
-    // Create invisible reCAPTCHA once DOM is ready
-    window.addEventListener("DOMContentLoaded", () => {
+    async function getRecaptchaVerifier() {
+      if (recaptchaVerifier) return recaptchaVerifier;
       recaptchaVerifier = new RecaptchaVerifier(auth, "recaptcha-container", { size: "invisible" });
-    });
+      await recaptchaVerifier.render(); // ensure widget exists
+      return recaptchaVerifier;
+    }
 
     $('sendCodeBtn').addEventListener('click', async () => {
       const phone = $('phone').value.trim();
       const msg = $('phoneMsg');
       msg.textContent = ""; msg.className = "muted";
-      if(!phone.startsWith('+')){ msg.textContent='Include country code, e.g. +82…'; msg.className='err'; return; }
-
+      if (!phone.startsWith('+')) {
+        msg.textContent = 'Include country code, e.g. +82…';
+        msg.className = 'err';
+        return;
+      }
       try {
-        confirmationResult = await signInWithPhoneNumber(auth, phone, recaptchaVerifier);
+        const verifier = await getRecaptchaVerifier();
+        confirmationResult = await signInWithPhoneNumber(auth, phone, verifier);
         $('codeRow').style.display = 'grid';
         msg.textContent = "Code sent. Please check your SMS.";
         msg.className = "ok";
@@ -416,8 +410,10 @@
         console.error(e);
         msg.textContent = e.message || "Failed to send code.";
         msg.className = "err";
-        try { recaptchaVerifier.clear(); } catch {}
-        recaptchaVerifier = new RecaptchaVerifier(auth, "recaptcha-container", { size: "invisible" });
+        try {
+          const id = await recaptchaVerifier.render();
+          grecaptcha.reset(id);
+        } catch {}
       }
     });
 
@@ -436,7 +432,7 @@
       }
     });
 
-    // ====== Chip radio for outside-group ======
+    /* ===== Chip radio for outside-group ===== */
     function chipRadio(groupId, onChange){
       const g = document.getElementById(groupId);
       g.addEventListener("click", (e)=>{
@@ -451,7 +447,7 @@
       $('outsideGroup_explain').style.display = val === "yes" ? "block" : "none";
     });
 
-    // ====== Submit ======
+    /* ===== Submit ===== */
     $('submitBtn').onclick=async()=>{
       try{
         if(!$('consent').checked){ flash('Please accept Terms and Privacy.', 'm3'); return; }
@@ -464,7 +460,6 @@
         const data={
           created_time: serverTimestamp(),
           status: "pending_review",
-          // step1
           full_name: $('full_name').value.trim(),
           display_name: $('display_name').value.trim(),
           email: $('email').value.trim().toLowerCase(),
@@ -476,21 +471,18 @@
           about_me: $('about_me').value.trim(),
           interests: getChips('interests'),
           values: getChips('values'),
-          // step2
           church_name: $('church_name').value.trim(),
           denomination: $('denomination').value,
           attendance: $('attendance').value,
           years_at_church: $('years_at_church').value,
           ministry: $('ministry').value,
           ministry_note: $('ministry_note').value.trim(),
-          // step3
           beliefs: getChips('beliefs'),
           jesus_only: $('jesus_only').value,
           bible: $('bible').value,
           purity: $('purity').value.trim(),
           faith_role: $('faith_role').value.trim(),
           non_negotiables: $('non_negotiables').value.trim(),
-          // new fields
           phone_number: verifiedPhone,
           phone_verified: true,
           outside_group: outsideVal,
@@ -498,10 +490,8 @@
           consent: true
         };
 
-        // Create doc first
         const newRef = await addDoc(collection(db, "interested_users"), data);
 
-        // Upload files if any
         const updates = {};
         const photoFile=$('photo').files[0];
         if(photoFile){

@@ -1,5 +1,6 @@
-update the code then with option B ( recommended)
+Here’s your file updated for **Option B** (no `getDownloadURL`; we store only Storage **paths** so your strict `allow read: if false` rules won’t block anything). I also removed the unused import and renamed the saved fields to `photo_path` / `selfie_path`.
 
+```html
 <!doctype html>
 <html lang="en">
 <head>
@@ -35,7 +36,6 @@ update the code then with option B ( recommended)
     .thumb{display:block;margin-top:8px;max-width:180px;border-radius:10px;border:1px solid var(--bd)}
     .divider{height:1px;background:var(--bd);margin:16px 0}
     small.code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--muted)}
-    /* Chip radio (Yes/No) */
     .chip-group{display:flex;gap:8px;margin:8px 0 6px}
     .chip-group .chip{border-radius:999px;background:#0d1019}
     .chip--active{background:var(--brand);color:#fff;border-color:var(--brand)}
@@ -292,7 +292,7 @@ update the code then with option B ( recommended)
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
     import { initializeAppCheck, ReCaptchaV3Provider } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app-check.js";
     import { getFirestore, addDoc, collection, serverTimestamp, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
-    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-storage.js";
+    import { getStorage, ref, uploadBytes } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-storage.js";
     import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-auth.js";
 
     const firebaseConfig = {
@@ -422,7 +422,6 @@ update the code then with option B ( recommended)
       if(!phone.startsWith('+')){ msg.textContent='Include country code, e.g. +82…'; msg.className='err'; return; }
       try{
         const verifier = await getRecaptchaVerifier();
-        // reset the same widget before each send to avoid stale token
         try{ const id = await recaptchaVerifier.render(); grecaptcha.reset(id); }catch{}
         confirmationResult = await signInWithPhoneNumber(auth, phone, verifier);
         $('codeRow').style.display='grid';
@@ -448,7 +447,7 @@ update the code then with option B ( recommended)
       } catch (e) {
         console.error(e);
         if (e.code === 'auth/code-expired') {
-          msg.textContent = "That code expired. Please tap Resend and try the newest code.";
+          msg.textContent = "That code expired. Please tap Resend and use the newest code.";
         } else {
           msg.textContent = e.message || "Invalid code. Please try again.";
         }
@@ -468,10 +467,45 @@ update the code then with option B ( recommended)
     }
     chipRadio("outsideGroup", (val)=>{ $('outsideGroup_explain').style.display = val === "yes" ? "block" : "none"; });
 
+    /* ---------- image compression helper (Option B) ---------- */
+    async function compressImage(fileOrBlob, maxDim=1800, maxBytes=7.5*1024*1024, quality=0.82) {
+      if (!fileOrBlob || !(fileOrBlob instanceof Blob)) return fileOrBlob;
+
+      const url = URL.createObjectURL(fileOrBlob);
+      const img = await new Promise((res, rej) => {
+        const i = new Image();
+        i.onload = () => res(i);
+        i.onerror = rej;
+        i.src = url;
+      });
+
+      let { width, height } = img;
+      const scale = Math.min(1, maxDim / Math.max(width, height));
+      width = Math.round(width * scale);
+      height = Math.round(height * scale);
+
+      const canvas = document.createElement('canvas');
+      canvas.width = width; canvas.height = height;
+      canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+
+      const toBlob = (q)=>new Promise(r=>canvas.toBlob(b=>r(b), 'image/jpeg', q));
+
+      let q = quality;
+      let out = await toBlob(q);
+      let tries = 0;
+      while (out && out.size > maxBytes && tries < 5) {
+        q *= 0.85;
+        out = await toBlob(q);
+        tries++;
+      }
+
+      URL.revokeObjectURL(url);
+      return out || fileOrBlob;
+    }
+
     /* ---------- submit ---------- */
     $('submitBtn').onclick=async()=>{
       try{
-        // step3 validation (remaining requireds)
         if(getChips('beliefs').length<1){ flash('Please select at least one foundational belief.','m3'); return; }
         const outsideVal = document.querySelector('#outsideGroup .chip--active').dataset.val;
         if(outsideVal==='yes' && !$('outsideGroup_explain').value.trim()){ flash('Please explain your answer about outside groups.','m3'); return; }
@@ -515,21 +549,25 @@ update the code then with option B ( recommended)
 
         const newRef = await addDoc(collection(db, "interested_users"), data);
 
+        // --- Upload files (store paths only; no reads) ---
         const updates = {};
         const photoFile=$('photo').files[0];
         if(photoFile){
           const pRef = ref(storage, `interested_users/${newRef.id}/display_photo.jpg`);
-          await uploadBytes(pRef, photoFile);
-          updates.photo_url = await getDownloadURL(pRef);
+          const compressedPhoto = await compressImage(photoFile, 1800, 7.5*1024*1024, 0.82);
+          await uploadBytes(pRef, compressedPhoto, { contentType: 'image/jpeg' });
+          updates.photo_path = pRef.fullPath;       // e.g. "interested_users/<id>/display_photo.jpg"
         }
         if(selfieBlob){
           const sRef = ref(storage, `interested_users/${newRef.id}/selfie.jpg`);
-          await uploadBytes(sRef, selfieBlob);
-          updates.selfie_url = await getDownloadURL(sRef);
+          const compressedSelfie = await compressImage(selfieBlob, 1400, 7.5*1024*1024, 0.85);
+          await uploadBytes(sRef, compressedSelfie, { contentType: 'image/jpeg' });
+          updates.selfie_path = sRef.fullPath;      // e.g. "interested_users/<id>/selfie.jpg"
         }
         if(Object.keys(updates).length){
           await updateDoc(doc(db,'interested_users',newRef.id), updates);
         }
+
         show('done');
       }catch(err){
         console.error(err);
@@ -539,3 +577,4 @@ update the code then with option B ( recommended)
   </script>
 </body>
 </html>
+```

@@ -5,10 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>K-Agape – Registration</title>
   <style>
-    :root{
-      --brand:#5638ff; --brand2:#7e67ff; --bg:#0e0f13; --card:#151823; --muted:#9aa3b2; --fg:#e9ecf1; --bd:#283044;
-      --ok:#3ddc97; --err:#ff5277;
-    }
+    :root{ --brand:#5638ff; --brand2:#7e67ff; --bg:#0e0f13; --card:#151823; --muted:#9aa3b2; --fg:#e9ecf1; --bd:#283044; --ok:#3ddc97; --err:#ff5277; }
     *{box-sizing:border-box}
     body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
     .wrap{max-width:860px;margin:28px auto;padding:0 16px}
@@ -20,19 +17,16 @@
     .row{display:grid;gap:12px}
     @media(min-width:720px){.row2{grid-template-columns:1fr 1fr}}
     label{font-weight:600;margin:10px 0 6px;display:block}
-    input,select,textarea,button{
-      width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--bd);background:#0d1019;color:var(--fg)
-    }
+    input,select,textarea,button{ width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--bd);background:#0d1019;color:var(--fg) }
     textarea{min-height:92px;resize:vertical}
     .chips{display:flex;flex-wrap:wrap;gap:8px}
-    .chip{
-      background:#0d1019;border:1px solid var(--bd);color:var(--fg);padding:8px 12px;border-radius:20px;cursor:pointer;user-select:none
-    }
+    .chip{ background:#0d1019;border:1px solid var(--bd);color:var(--fg);padding:8px 12px;border-radius:20px;cursor:pointer;user-select:none }
     .chip.on{background:var(--brand);border-color:var(--brand)}
     .muted{color:var(--muted)}
     .actions{display:flex;gap:10px;justify-content:flex-end;margin-top:16px}
     .btn{background:var(--brand);border:0;color:#fff;font-weight:700;cursor:pointer}
     .btn.secondary{background:#1b2030}
+    .btn.ghost{background:transparent;border:1px solid var(--bd)}
     .msg{margin-top:10px;font-weight:600}
     .ok{color:var(--ok)} .err{color:var(--err)}
     .inline{display:flex;align-items:center;gap:10px}
@@ -55,6 +49,7 @@
     <!-- STEP 1: BASIC INFO -->
     <section id="step1" class="step active">
       <h3>1) Basic Info</h3>
+
       <div class="row row2">
         <div>
           <label>Full name</label>
@@ -62,7 +57,7 @@
         </div>
         <div>
           <label>Display name</label>
-          <input id="display_name" placeholder="How others see your name">
+          <input id="display_name" required placeholder="How others see your name">
         </div>
       </div>
 
@@ -73,39 +68,40 @@
         </div>
         <div>
           <label>Age</label>
-          <input id="age" type="number" min="18" max="99" placeholder="18+">
+          <input id="age" type="number" min="18" max="99" required placeholder="18+">
         </div>
       </div>
 
       <div class="row row2">
         <div>
           <label>Location</label>
-          <input id="location" placeholder="City, Country">
+          <input id="location" required placeholder="City, Country">
         </div>
         <div>
           <label>Occupation</label>
-          <input id="occupation">
+          <input id="occupation" required>
         </div>
       </div>
 
       <div class="row row2">
         <div>
           <label>Education</label>
-          <select id="education">
+          <select id="education" required>
             <option value="">Select…</option>
             <option>High School</option><option>Bachelor</option><option>Master</option><option>Doctorate</option><option>Other</option>
           </select>
         </div>
         <div>
           <label>Relationship Goal</label>
-          <select id="relationship_goal">
+          <select id="relationship_goal" required>
+            <option value="">Select…</option>
             <option>Friendship</option><option>Dating</option><option>Marriage</option>
           </select>
         </div>
       </div>
 
       <label>About Me</label>
-      <textarea id="about_me" placeholder="Tell others a little about you…"></textarea>
+      <textarea id="about_me" required placeholder="Tell others a little about you…"></textarea>
 
       <div class="divider"></div>
 
@@ -126,18 +122,18 @@
       <h3>2) Basic Faith Info</h3>
 
       <label>Church Name</label>
-      <input id="church_name" placeholder="Your current church name">
+      <input id="church_name" required placeholder="Your current church name">
 
       <div class="row row2">
         <div>
           <label>Church Denomination</label>
-          <select id="denomination">
+          <select id="denomination" required>
             <option>Protestant</option><option>Catholic</option><option>Orthodox</option><option>Other</option>
           </select>
         </div>
         <div>
           <label>Attendance Frequency</label>
-          <select id="attendance">
+          <select id="attendance" required>
             <option>Weekly or more</option><option>2–3 times a month</option><option>Monthly or for major events</option>
             <option>Rarely</option><option>Not currently attending</option>
           </select>
@@ -147,20 +143,20 @@
       <div class="row row2">
         <div>
           <label>Years at Current Church</label>
-          <select id="years_at_church">
+          <select id="years_at_church" required>
             <option>Less than 1 year</option><option>1–3 years</option><option>3–5 years</option><option>More than 5 years</option>
           </select>
         </div>
         <div>
           <label>Ministry Involvement</label>
-          <select id="ministry">
+          <select id="ministry" required>
             <option>No</option><option>Yes</option>
           </select>
         </div>
       </div>
 
-      <label>If serving, please explain</label>
-      <textarea id="ministry_note" placeholder="Role, frequency, etc. (optional)"></textarea>
+      <label>Describe your ministry involvement (required if you answered “Yes”)</label>
+      <textarea id="ministry_note" placeholder="Role, frequency, etc."></textarea>
 
       <div class="actions">
         <button class="btn secondary" id="back2">Back</button>
@@ -173,21 +169,20 @@
     <section id="step3" class="step">
       <h3>3) Faith Background & Verification</h3>
 
-      <label>Foundational Beliefs (select all that apply)</label>
+      <label>Foundational Beliefs (select all that apply, at least 1)</label>
       <div id="beliefs" class="chips"></div>
 
       <div class="row row2" style="margin-top:8px">
         <div>
           <label>Jesus is the only way to salvation (John 14:6)?</label>
-          <select id="jesus_only"><option>Yes</option><option>No</option><option>Unsure</option></select>
+          <select id="jesus_only" required><option>Yes</option><option>No</option><option>Unsure</option></select>
         </div>
         <div>
           <label>Bible authority</label>
-          <select id="bible"><option>Bible alone</option><option>Bible plus additional writings</option><option>Not sure</option></select>
+          <select id="bible" required><option>Bible alone</option><option>Bible plus additional writings</option><option>Not sure</option></select>
         </div>
       </div>
 
-      <!-- Outside movements (chip radio) -->
       <label>Have you ever been part of or influenced by any group that is not considered true Christianity (like Jehovah’s Witnesses, Mormons, Shincheonji, or New Age)?</label>
       <div id="outsideGroup" class="chip-group" role="radiogroup" aria-label="Outside orthodox Christianity">
         <button type="button" class="chip" data-val="yes">Yes – please explain</button>
@@ -196,18 +191,18 @@
       <textarea id="outsideGroup_explain" rows="3" placeholder="Please explain if you answered yes..." style="display:none"></textarea>
 
       <label>What are your views on sexual purity before marriage, cohabitation, and use of pornography?</label>
-      <textarea id="purity"></textarea>
+      <textarea id="purity" required></textarea>
 
       <label>What role does faith play in your understanding of Christian dating and marriage?</label>
-      <textarea id="faith_role"></textarea>
+      <textarea id="faith_role" required></textarea>
 
       <label>Spiritual or theological non-negotiables when considering a future spouse</label>
-      <textarea id="non_negotiables"></textarea>
+      <textarea id="non_negotiables" required></textarea>
 
       <div class="divider"></div>
 
-      <label>Profile Photo for display</label>
-      <input id="photo" type="file" accept="image/*"/>
+      <label>Profile Photo for display (required)</label>
+      <input id="photo" type="file" accept="image/*" required/>
       <img id="photo_prev" class="thumb" style="display:none"/>
       <p class="muted">You can update or delete this later from your account settings after logging in.</p>
 
@@ -218,12 +213,13 @@
       <div class="row row2">
         <div>
           <label>Phone (with country code, e.g. +82…)</label>
-          <input id="phone" placeholder="+82…" inputmode="tel"/>
+          <input id="phone" placeholder="+82…" inputmode="tel" required/>
         </div>
         <div class="row">
           <div>
             <label>&nbsp;</label>
             <button class="btn" id="sendCodeBtn">Send code</button>
+            <button class="btn ghost" id="resendBtn" style="display:none">Resend <span id="resendTimer"></span></button>
           </div>
         </div>
       </div>
@@ -231,7 +227,7 @@
       <div id="codeRow" class="row row2" style="display:none">
         <div>
           <label>Enter code</label>
-          <input id="smsCode" placeholder="6-digit code" inputmode="numeric" maxlength="6"/>
+          <input id="smsCode" placeholder="6-digit code" inputmode="numeric" maxlength="6" required/>
         </div>
         <div class="row">
           <div>
@@ -265,7 +261,7 @@
       <div class="divider"></div>
 
       <label class="inline" style="gap:10px;margin-top:6px">
-        <input id="consent" type="checkbox" style="width:auto"/>
+        <input id="consent" type="checkbox" style="width:auto" required/>
         <span class="muted">I agree to the
           <a href="https://glodymatayi.github.io/k-Agape-legal/terms.html" target="_blank">Terms</a> and
           <a href="https://glodymatayi.github.io/k-Agape-legal/privacy.html" target="_blank">Privacy Policy</a>.
@@ -317,8 +313,9 @@
 
     const $ = (id)=>document.getElementById(id);
     const show = (id)=>{ for(const s of document.querySelectorAll('.step')) s.classList.remove('active'); $(id).classList.add('active'); };
-    function flash(msg, where='m3', ok=false){ const el=$(where); el.textContent=msg; el.className='msg '+(ok?'ok':'err'); setTimeout(()=>{el.textContent='';}, 4000); }
+    const flash = (msg, where='m3', ok=false)=>{ const el=$(where); el.textContent=msg; el.className='msg '+(ok?'ok':'err'); };
 
+    /* ---------- chips (multi-select) ---------- */
     function renderChips(containerId, options, max=5){
       const el=$(containerId); el.dataset.max=max; el.dataset.sel="[]";
       options.forEach(txt=>{
@@ -328,7 +325,7 @@
           const idx=sel.indexOf(txt);
           if(idx>=0){ sel.splice(idx,1); c.classList.remove('on'); }
           else{
-            if(sel.length>=max){ flash(`${containerId} can have up to ${max}`, 'm1'); return; }
+            if(sel.length>=max){ flash(`Pick up to ${max}.`, 'm1'); return; }
             sel.push(txt); c.classList.add('on');
           }
           el.dataset.sel=JSON.stringify(sel);
@@ -336,7 +333,7 @@
         el.appendChild(c);
       });
     }
-    function getChips(containerId){ return JSON.parse($(containerId).dataset.sel||"[]"); }
+    const getChips = (id)=>JSON.parse($(id).dataset.sel||"[]");
 
     renderChips('interests', ["Travel","Music","Movies","Fitness","Cooking","Reading","Photography","Art","Dancing","Hiking","Gaming","Sports","Fashion","Food","Coffee","Wine","Yoga","Beach","Dogs","Cats"], 5);
     renderChips('values', ["Family","Honesty","Discipline","Patience","Integrity","Reading","Gratitude","Responsibility","Courage","Empathy","Self-discipline","Wisdom","Relaxation","Dreams chasing","Free mind","Life balance"], 5);
@@ -346,20 +343,33 @@
       "Visible return of Christ","Reality of heaven and earth","The Church as the Body of Christ"
     ], 20);
 
+    /* ---------- step navigation with validation ---------- */
+    const req = (v)=>v!=null && String(v).trim().length>0;
     $('next1').onclick=()=>{
-      if(!$('full_name').value.trim() || !$('email').value.trim()){
-        flash('Please provide at least your full name and email.', 'm1'); return;
+      if(!req($('full_name').value) || !req($('display_name').value) || !req($('email').value) ||
+         !req($('age').value) || Number($('age').value) < 18 ||
+         !req($('location').value) || !req($('occupation').value) ||
+         !req($('education').value) || !req($('relationship_goal').value) ||
+         !req($('about_me').value) || getChips('interests').length<1 || getChips('values').length<1){
+        flash('Please fill everything on this page (age must be 18+; pick at least one interest and one value).','m1'); return;
       }
       show('step2');
     };
     $('back2').onclick=()=>show('step1');
-    $('next2').onclick=()=>show('step3');
+    $('next2').onclick=()=>{
+      const mustExplain = $('ministry').value === 'Yes' && !req($('ministry_note').value);
+      if(!req($('church_name').value) || !req($('denomination').value) || !req($('attendance').value) ||
+         !req($('years_at_church').value) || !req($('ministry').value) || mustExplain){
+        flash('Please complete all fields (add a short note if you serve in ministry).','m2'); return;
+      }
+      show('step3');
+    };
     $('back3').onclick=()=>show('step2');
 
+    /* ---------- photo + selfie ---------- */
     $('photo').addEventListener('change', e=>{
       const f=e.target.files[0]; if(!f){$('photo_prev').style.display='none';return;}
-      const url=URL.createObjectURL(f);
-      $('photo_prev').src=url; $('photo_prev').style.display='block';
+      $('photo_prev').src=URL.createObjectURL(f); $('photo_prev').style.display='block';
     });
 
     let selfieBlob=null;
@@ -370,52 +380,60 @@
     $('shotBtn').onclick=()=>{
       const v=$('cam'); if(!v.videoWidth){flash('Camera not available (you can skip selfie).'); return;}
       const c=$('canvas'); c.width=v.videoWidth; c.height=v.videoHeight;
-      const ctx=c.getContext('2d'); ctx.drawImage(v,0,0);
-      c.toBlob(b=>{
-        if(b){ selfieBlob=b; const url=URL.createObjectURL(b); $('selfie_prev').src=url; $('selfie_prev').style.display='block'; flash('Selfie captured.', 'm3', true); }
-      }, 'image/jpeg', 0.9);
+      c.getContext('2d').drawImage(v,0,0);
+      c.toBlob(b=>{ if(b){ selfieBlob=b; $('selfie_prev').src=URL.createObjectURL(b); $('selfie_prev').style.display='block'; flash('Selfie captured.','m3',true);} }, 'image/jpeg', 0.9);
     };
 
-    /* ===== Phone verification (singleton reCAPTCHA) ===== */
+    /* ---------- phone verification (singleton reCAPTCHA + resend) ---------- */
     const auth = getAuth(app);
     auth.useDeviceLanguage();
 
-    let recaptchaVerifier;      // singleton
+    let recaptchaVerifier; // singleton
     let confirmationResult;
     let verifiedPhone = "";
 
     async function getRecaptchaVerifier() {
       if (recaptchaVerifier) return recaptchaVerifier;
       recaptchaVerifier = new RecaptchaVerifier(auth, "recaptcha-container", { size: "invisible" });
-      await recaptchaVerifier.render(); // ensure widget exists
+      await recaptchaVerifier.render();
       return recaptchaVerifier;
     }
 
-    $('sendCodeBtn').addEventListener('click', async () => {
+    let resendCountdownId=null;
+    function startResendTimer(seconds=30){
+      const btn=$('resendBtn'), t=$('resendTimer');
+      let left=seconds;
+      btn.style.display='inline-block';
+      btn.disabled=true;
+      t.textContent=`(${left}s)`;
+      clearInterval(resendCountdownId);
+      resendCountdownId=setInterval(()=>{
+        left--; t.textContent=`(${left}s)`;
+        if(left<=0){ clearInterval(resendCountdownId); btn.disabled=false; t.textContent=''; }
+      },1000);
+    }
+
+    async function sendCode(){
       const phone = $('phone').value.trim();
       const msg = $('phoneMsg');
-      msg.textContent = ""; msg.className = "muted";
-      if (!phone.startsWith('+')) {
-        msg.textContent = 'Include country code, e.g. +82…';
-        msg.className = 'err';
-        return;
-      }
-      try {
+      msg.textContent=""; msg.className="muted";
+      if(!phone.startsWith('+')){ msg.textContent='Include country code, e.g. +82…'; msg.className='err'; return; }
+      try{
         const verifier = await getRecaptchaVerifier();
+        // reset the same widget before each send to avoid stale token
+        try{ const id = await recaptchaVerifier.render(); grecaptcha.reset(id); }catch{}
         confirmationResult = await signInWithPhoneNumber(auth, phone, verifier);
-        $('codeRow').style.display = 'grid';
-        msg.textContent = "Code sent. Please check your SMS.";
-        msg.className = "ok";
-      } catch (e) {
+        $('codeRow').style.display='grid';
+        msg.textContent='Code sent. Please check your SMS.'; msg.className='ok';
+        startResendTimer(30);
+      }catch(e){
         console.error(e);
-        msg.textContent = e.message || "Failed to send code.";
-        msg.className = "err";
-        try {
-          const id = await recaptchaVerifier.render();
-          grecaptcha.reset(id);
-        } catch {}
+        msg.textContent = e.message || 'Failed to send code.'; msg.className='err';
       }
-    });
+    }
+
+    $('sendCodeBtn').addEventListener('click', sendCode);
+    $('resendBtn').addEventListener('click', sendCode);
 
     $('verifyCodeBtn').addEventListener('click', async () => {
       const code = $('smsCode').value.trim();
@@ -427,35 +445,38 @@
         msg.className = "ok";
       } catch (e) {
         console.error(e);
-        msg.textContent = e.message || "Invalid code. Please try again.";
+        if (e.code === 'auth/code-expired') {
+          msg.textContent = "That code expired. Please tap Resend and try the newest code.";
+        } else {
+          msg.textContent = e.message || "Invalid code. Please try again.";
+        }
         msg.className = "err";
       }
     });
 
-    /* ===== Chip radio for outside-group ===== */
+    /* ---------- chip radio for outside-group ---------- */
     function chipRadio(groupId, onChange){
       const g = document.getElementById(groupId);
       g.addEventListener("click", (e)=>{
-        const b = e.target.closest("button");
-        if(!b) return;
+        const b = e.target.closest("button"); if(!b) return;
         [...g.querySelectorAll("button")].forEach(x=>x.classList.remove("chip--active"));
         b.classList.add("chip--active");
         onChange(b.dataset.val);
       });
     }
-    chipRadio("outsideGroup", (val)=>{
-      $('outsideGroup_explain').style.display = val === "yes" ? "block" : "none";
-    });
+    chipRadio("outsideGroup", (val)=>{ $('outsideGroup_explain').style.display = val === "yes" ? "block" : "none"; });
 
-    /* ===== Submit ===== */
+    /* ---------- submit ---------- */
     $('submitBtn').onclick=async()=>{
       try{
-        if(!$('consent').checked){ flash('Please accept Terms and Privacy.', 'm3'); return; }
-        if(!verifiedPhone){ flash('Please verify your phone first.', 'm3'); return; }
-        if(SELFIE_REQUIRED && !selfieBlob){ flash('Selfie is required to submit.', 'm3'); return; }
-
+        // step3 validation (remaining requireds)
+        if(getChips('beliefs').length<1){ flash('Please select at least one foundational belief.','m3'); return; }
         const outsideVal = document.querySelector('#outsideGroup .chip--active').dataset.val;
-        const outsideExplain = $('outsideGroup_explain').value.trim();
+        if(outsideVal==='yes' && !$('outsideGroup_explain').value.trim()){ flash('Please explain your answer about outside groups.','m3'); return; }
+        if(!$('photo').files[0]){ flash('Please add a profile photo.','m3'); return; }
+        if(!verifiedPhone){ flash('Please verify your phone first.','m3'); return; }
+        if(SELFIE_REQUIRED && !selfieBlob){ flash('Selfie is required to submit.','m3'); return; }
+        if(!$('consent').checked){ flash('Please accept Terms and Privacy.','m3'); return; }
 
         const data={
           created_time: serverTimestamp(),
@@ -463,7 +484,7 @@
           full_name: $('full_name').value.trim(),
           display_name: $('display_name').value.trim(),
           email: $('email').value.trim().toLowerCase(),
-          age: $('age').value ? Number($('age').value) : null,
+          age: Number($('age').value),
           location: $('location').value.trim(),
           occupation: $('occupation').value.trim(),
           education: $('education').value,
@@ -476,7 +497,7 @@
           attendance: $('attendance').value,
           years_at_church: $('years_at_church').value,
           ministry: $('ministry').value,
-          ministry_note: $('ministry_note').value.trim(),
+          ministry_note: $('ministry').value==='Yes' ? $('ministry_note').value.trim() : '',
           beliefs: getChips('beliefs'),
           jesus_only: $('jesus_only').value,
           bible: $('bible').value,
@@ -486,7 +507,7 @@
           phone_number: verifiedPhone,
           phone_verified: true,
           outside_group: outsideVal,
-          outside_group_explain: outsideVal === "yes" ? outsideExplain : "",
+          outside_group_explain: outsideVal === "yes" ? $('outsideGroup_explain').value.trim() : "",
           consent: true
         };
 
@@ -507,10 +528,10 @@
         if(Object.keys(updates).length){
           await updateDoc(doc(db,'interested_users',newRef.id), updates);
         }
-
         show('done');
       }catch(err){
-        console.error(err); flash(err.message||'Submission failed. Please try again.', 'm3');
+        console.error(err);
+        flash(err.message||'Submission failed. Please try again.','m3');
       }
     };
   </script>
